@@ -1,6 +1,6 @@
 {
-  "name": "excel4node",
-  "version": "1.7.2",
+  "name": "excel4node-gmm",
+  "version": "1.7.3",
   "description": "Library to create Formatted Excel Files.",
   "engines": {
     "node": ">4.0.0"
@@ -23,7 +23,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/natergj/excel4node.git"
+    "url": "https://github.com/GMM-Monumento/excel4node.git"
   },
   "bugs": {
     "url": "https://github.com/natergj/excel4node/labels/bug"
