@@ -30,7 +30,7 @@ class Worksheet {
      * @param {Boolean} opts.printOptions.centerVertical Should data be centered vertically when printed
      * @param {Boolean} opts.printOptions.printGridLines Should gridlines by printed
      * @param {Boolean} opts.printOptions.printHeadings Should Heading be printed
-     * @param {String} opts.headerFooter Set Header and Footer strings and options. 
+     * @param {String} opts.headerFooter Set Header and Footer strings and options.
      * @param {String} opts.headerFooter.evenFooter Even footer text
      * @param {String} opts.headerFooter.evenHeader Even header text
      * @param {String} opts.headerFooter.firstFooter First footer text
@@ -50,7 +50,7 @@ class Worksheet {
      * @param {Number} opts.pageSetup.firstPageNumber Should the page number of the first page be printed
      * @param {Number} opts.pageSetup.fitToHeight Number of vertical pages to fit to
      * @param {Number} opts.pageSetup.fitToWidth Number of horizontal pages to fit to
-     * @param {Number} opts.pageSetup.horizontalDpi 
+     * @param {Number} opts.pageSetup.horizontalDpi
      * @param {String} opts.pageSetup.orientation One of 'default', 'portrait', 'landscape'
      * @param {String} opts.pageSetup.pageOrder One of 'downThenOver', 'overThenDown'
      * @param {String} opts.pageSetup.paperHeight Value must a positive Float immediately followed by unit of measure from list mm, cm, in, pt, pc, pi. i.e. '10.5cm'
@@ -59,9 +59,9 @@ class Worksheet {
      * @param {Number} opts.pageSetup.scale zoom of worksheet
      * @param {Boolean} opts.pageSetup.useFirstPageNumber
      * @param {Boolean} opts.pageSetup.usePrinterDefaults
-     * @param {Number} opts.pageSetup.verticalDpi 
-     * @param {Object} opts.sheetView 
-     * @param {Object} opts.sheetView.pane 
+     * @param {Number} opts.pageSetup.verticalDpi
+     * @param {Object} opts.sheetView
+     * @param {Object} opts.sheetView.pane
      * @param {String} opts.sheetView.pane.activePane one of 'bottomLeft', 'bottomRight', 'topLeft', 'topRight'
      * @param {String} opts.sheetView.pane.state ne of 'split', 'frozen', 'frozenSplit'
      * @param {String} opts.sheetView.pane.topLeftCell Cell Reference i.e. 'A1'
@@ -72,13 +72,13 @@ class Worksheet {
      * @param {Number} opts.sheetView.zoomScale  Defaults to 100
      * @param {Number} opts.sheetView.zoomScaleNormal Defaults to 100
      * @param {Number} opts.sheetView.zoomScalePageLayoutView Defaults to 100
-     * @param {Object} opts.sheetFormat 
+     * @param {Object} opts.sheetFormat
      * @param {Number} opts.sheetFormat.baseColWidth Defaults to 10. Specifies the number of characters of the maximum digit width of the normal style's font. This value does not include margin padding or extra padding for gridlines. It is only the number of characters.,
      * @param {Number} opts.sheetFormat.defaultColWidth
      * @param {Number} opts.sheetFormat.defaultRowHeight
      * @param {Boolean} opts.sheetFormat.thickBottom 'True' if rows have a thick bottom border by default.
      * @param {Boolean} opts.sheetFormat.thickTop 'True' if rows have a thick top border by default.
-     * @param {Object} opts.sheetProtection same as "Protect Sheet" in Review tab of Excel 
+     * @param {Object} opts.sheetProtection same as "Protect Sheet" in Review tab of Excel
      * @param {Boolean} opts.sheetProtection.autoFilter True means that that user will be unable to modify this setting
      * @param {Boolean} opts.sheetProtection.deleteColumns True means that that user will be unable to modify this setting
      * @param {Boolean} opts.sheetProtection.deleteRows True means that that user will be unable to modify this setting
@@ -96,7 +96,7 @@ class Worksheet {
      * @param {Boolean} opts.sheetProtection.selectUnlockedCells True means that that user will be unable to modify this setting
      * @param {Boolean} opts.sheetProtection.sheet True means that that user will be unable to modify this setting
      * @param {Boolean} opts.sheetProtection.sort True means that that user will be unable to modify this setting
-     * @param {Object} opts.outline 
+     * @param {Object} opts.outline
      * @param {Boolean} opts.outline.summaryBelow Flag indicating whether summary rows appear below detail in an outline, when applying an outline/grouping.
      * @param {Boolean} opts.outline.summaryRight Flag indicating whether summary columns appear to the right of detail in an outline, when applying an outline/grouping.
      * @param {Boolean} opts.disableRowSpansOptimization Flag indicated whether to not include a spans attribute to the row definition in the XML. helps with very large documents.
@@ -110,7 +110,7 @@ class Worksheet {
         this.localSheetId = this.wb.sheets.length;
         this.opts = deepmerge(wsDefaultParams, opts);
         optsValidator(opts);
-        
+
         this.name = name ? name : `Sheet ${this.sheetId}`;
         this.hasGroupings = false;
         this.cols = {}; // Columns keyed by column, contains column properties
@@ -119,9 +119,10 @@ class Worksheet {
         this.mergedCells = [];
         this.pageBreaks = {
             row: [],
-            column: [],
+            column: []
         };
         this.printArea = null;
+        this.printTitles = null;
         this.lastUsedRow = 1;
         this.lastUsedCol = 1;
 
@@ -143,7 +144,7 @@ class Worksheet {
         if (!this.drawingCollection.isEmpty) {
             rels.push('drawing');
         }
-        if(Object.keys(this.comments).length > 0) {
+        if (Object.keys(this.comments).length > 0) {
             rels.push('comments');
             rels.push('commentsVml');
         }
@@ -208,14 +209,14 @@ class Worksheet {
     }
 
     generateCommentsXML() {
-        if(Object.keys(this.comments).length === 0) {
+        if (Object.keys(this.comments).length === 0) {
             return;
         }
         return xmlBuilder.commentsXML(this);
     }
 
     generateCommentsVmlXML() {
-        if(Object.keys(this.comments).length === 0) {
+        if (Object.keys(this.comments).length === 0) {
             return;
         }
         return xmlBuilder.commentsVmlXML(this);
@@ -223,7 +224,7 @@ class Worksheet {
 
     /**
      * @func Worksheet.generateXML
-     * @desc When Workbook is being built, generate the XML that will go into the Worksheet xml file 
+     * @desc When Workbook is being built, generate the XML that will go into the Worksheet xml file
      */
     generateXML() {
         return xmlBuilder.sheetXML(this);
@@ -273,8 +274,8 @@ class Worksheet {
 
     /**
      * @func Worksheet.addPageBreak
-     * @param {string} type 
-     * @param {number} position 
+     * @param {string} type
+     * @param {number} position
      * @returns {Worksheet}
      */
     addPageBreak(type, position) {
@@ -290,10 +291,10 @@ class Worksheet {
 
     /**
      * @method Worksheet.addPrintArea
-     * @param {number} startRow 
-     * @param {number} startCol 
-     * @param {number} endRow 
-     * @param {number} endCol 
+     * @param {number} startRow
+     * @param {number} startCol
+     * @param {number} endRow
+     * @param {number} endCol
      * @returns {Worksheet}
      */
     setPrintArea(startRow, startCol, endRow, endCol) {
@@ -310,8 +311,40 @@ class Worksheet {
             startRow,
             startCol,
             endRow,
-            endCol,
+            endCol
+        };
+        return this;
+    }
+
+    /**
+     * @method Worksheet.setPrintTitles
+     * @param {number} startRow
+     * @param {number} startCol
+     * @param {number} endRow
+     * @param {number} endCol
+     * @returns {Worksheet}
+     */
+    setPrintTitles(startRow, startCol, endRow, endCol) {
+        if (
+            (startRow && !endRow) ||
+            (!startRow && endRow) ||
+            (startCol && !endCol) ||
+            (!startCol && endCol) ||
+            (startRow && typeof startRow !== 'number') ||
+            (startCol && typeof startCol !== 'number') ||
+            (endRow && typeof endRow !== 'number') ||
+            (endCol && typeof endCol !== 'number')
+        ) {
+            this.wb.logger.warn('invalid option sent to setPrintTitles method');
+            return;
         }
+        this.printTitles = {
+            startRow,
+            startCol,
+            endRow,
+            endCol
+        };
+        console.error(this.printTitles);
         return this;
     }
 
