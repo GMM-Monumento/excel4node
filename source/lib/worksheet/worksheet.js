@@ -344,7 +344,6 @@ class Worksheet {
             endRow,
             endCol
         };
-        console.error(this.printTitles);
         return this;
     }
 

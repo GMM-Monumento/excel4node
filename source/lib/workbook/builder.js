@@ -207,7 +207,6 @@ let addWorkbookXML = (promiseObj) => {
                 if (s.printTitles.startCol && s.printTitles.endCol) {
                     text.push(`'${name}'!${utils.getExcelAlpha(s.printTitles.startCol)}:${utils.getExcelAlpha(s.printTitles.endCol)}`);
                 }
-                console.error(text);
                 s.wb.definedNameCollection.addDefinedName({
                     name: '_xlnm.Print_Titles',
                     localSheetId: s.localSheetId,
